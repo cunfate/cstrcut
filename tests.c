@@ -17,7 +17,7 @@ static int test_pass 	= 0;
 		}\
 	}while(0)
 
-#define EXPECT_EQUAL(expect, actual) EXPECT_BASE(((expect)==(actual)), (expect), (actual), "%ld")
+#define EXPECT_EQUAL(expect, actual) EXPECT_BASE(((expect)==(actual)), (expect), (actual), "%d")
 #define EXPECT_NULL(ptr) EXPECT_BASE(((ptr) == NULL), (void *)NULL, (ptr), "%p")
 
 void printDyArray(dyArray_t* array) {
