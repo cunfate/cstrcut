@@ -58,7 +58,7 @@ unsigned long dyArray_resize(dyArray_t* array, uint32_t length) {
 unsigned long dyArray_insert(dyArray_t* array, const char *elements, uint32_t length, int64_t local) {
 	if(array == NULL || elements == NULL)
 		RET_ERROR((unsigned long)RET_MEM_FAILED);
-	int64_t ret = 0, i = 0, k = 0;
+	int64_t ret = 0, i = 0;
 	uint32_t local_actual;
 	if(local >= 0)
 		local_actual = local;
@@ -71,13 +71,12 @@ unsigned long dyArray_insert(dyArray_t* array, const char *elements, uint32_t le
 			RET_ERROR((unsigned long)ret);
 	}
 	
-	for(i = (array->length) * array->elesize; i > local_actual * array->elesize; i--) {
+	for(i = ((int64_t)(array->length) - 1) * array->elesize; i >= local_actual * array->elesize; i--) {
 		array->arr[i + span] = array->arr[i];
 	}
 
-	for(i = local_actual * array->elesize, k = 0; i < (local_actual + length) * array->elesize; i++, k++) {
-		array->arr[i] = elements[k];
-	}
+	memcpy(array->arr + (local_actual * array->elesize), elements, span);
+
 	array->length = before_length + length;
 
 	return RET_OK;
